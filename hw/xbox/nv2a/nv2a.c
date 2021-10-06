@@ -307,7 +307,7 @@ static void nv2a_reset(NV2AState *d)
 
     d->pcrtc.start = 0;
     d->pramdac.core_clock_coeff = 0x00011C01; /* 189MHz...? */
-    d->pramdac.core_clock_freq = 233000000;
+    d->pramdac.core_clock_freq = 233333332 * 2;
     d->pramdac.memory_clock_coeff = 0;
     d->pramdac.video_clock_coeff = 0x0003C20D; /* 25182Khz...? */
 
