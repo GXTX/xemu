@@ -99,7 +99,7 @@ void pramdac_write(void *opaque, hwaddr addr, uint64_t val, unsigned int size)
             //d->pramdac.core_clock_freq = (NV2A_CRYSTAL_FREQ * n)
             //                              / (1 << p) / m;
             d->pramdac.core_clock_freq = (n * NV2A_CRYSTAL_FREQ / m) >> p;
-            printf("nv2a: %d", d->pramdac.core_clock_freq);
+            printf("nv2a2: %d\nv2a1: %d\n", d->pramdac.core_clock_freq, ((NV2A_CRYSTAL_FREQ * n) / (1 << p) / m));
         }
 
         break;
