@@ -280,10 +280,10 @@ static void nv2a_reset(NV2AState *d)
     memset(d->pgraph.regs, 0, sizeof(d->pgraph.regs));
 
     d->pcrtc.start = 0;
-    d->pramdac.core_clock_coeff = 0x00011C01; /* 189MHz...? */
-    d->pramdac.core_clock_freq = 233333324 * 2;
-    d->pramdac.memory_clock_coeff = 0;
-    d->pramdac.video_clock_coeff = 0x0003C20D; /* 25182Khz...? */
+    //d->pramdac.core_clock_coeff = 0x00011C01; /* 189MHz...? */
+    //d->pramdac.core_clock_freq = 233333324 * 2;
+    //d->pramdac.memory_clock_coeff = 0;
+    //d->pramdac.video_clock_coeff = 0x0003C20D; /* 25182Khz...? */
 
     d->pfifo.regs[NV_PFIFO_CACHE1_STATUS] |= NV_PFIFO_CACHE1_STATUS_LOW_MARK;
 
