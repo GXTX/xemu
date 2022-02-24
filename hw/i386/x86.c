@@ -522,7 +522,7 @@ static long get_file_size(FILE *f)
 /* TSC handling */
 uint64_t cpu_get_tsc(CPUX86State *env)
 {
-#ifdef XBOX
+#ifndef XBOX
     return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), 733333333,
                     NANOSECONDS_PER_SECOND);
 #else
