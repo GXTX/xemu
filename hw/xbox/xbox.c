@@ -119,7 +119,7 @@ static void xbox_flash_init(MachineState *ms, MemoryRegion *rom_memory)
         memory_region_init_alias(map_bios, NULL, "pci-bios", bios, 0,
                                  bios_size);
         memory_region_add_subregion(rom_memory, map_loc, map_bios);
-        memory_region_set_readonly(map_bios, true);
+        memory_region_set_readonly(map_bios, false);
     }
 
     /* Create MCPX Boot ROM memory region
