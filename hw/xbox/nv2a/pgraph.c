@@ -1117,15 +1117,8 @@ int pgraph_method(NV2AState *d, unsigned int subchannel,
             goto unhandled;
         }
         size_t num_words_consumed = 1;
-
-        if (method == 0x038c || method == 0x0390) {
-            handler(d, pg, subchannel, method, 0x1b01, parameters,
-                num_words_available, &num_words_consumed, inc);
-        } else {
-            handler(d, pg, subchannel, method, parameter, parameters,
-                num_words_available, &num_words_consumed, inc);
-        }
-
+        handler(d, pg, subchannel, method, parameter, parameters,
+            num_words_available, &num_words_consumed, inc);
         /* Squash repeated BEGIN,DRAW_ARRAYS,END */
         #define LAM(i, mthd) ((parameters[i*2+1] & 0x31fff) == (mthd))
         #define LAP(i, prm) (parameters[i*2+2] == (prm))
