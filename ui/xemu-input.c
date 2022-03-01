@@ -286,6 +286,12 @@ void xemu_input_update_sdl_kbd_controller_state(ControllerState *state)
         state->buttons |= kbd[sdl_kbd_button_map[i]] << i;
     }
 
+    if (kbd[sdl_kbd_button_map[0]] == 1) {
+        wireframe = true;
+    } else {
+        wireframe = false;
+    }
+
     /*
     W = LTrig
        E

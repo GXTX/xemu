@@ -98,6 +98,8 @@ typedef QTAILQ_HEAD(, ControllerState) ControllerStateList;
 extern ControllerStateList available_controllers;
 extern ControllerState *bound_controllers[4];
 
+extern volatile bool wireframe;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

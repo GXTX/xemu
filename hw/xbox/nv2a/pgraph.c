@@ -34,6 +34,8 @@ GloContext *g_nv2a_context_display;
 
 NV2AStats g_nv2a_stats;
 
+volatile bool wireframe = false;
+
 static void nv2a_profile_increment(void)
 {
     int64_t now = qemu_clock_get_us(QEMU_CLOCK_REALTIME);
@@ -7223,16 +7225,21 @@ static unsigned int kelvin_map_stencil_op(uint32_t parameter)
 static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
 {
     unsigned int mode;
-    switch (parameter) {
-    case NV097_SET_FRONT_POLYGON_MODE_V_POINT:
-        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_POINT; break;
-    case NV097_SET_FRONT_POLYGON_MODE_V_LINE:
-        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
-    case NV097_SET_FRONT_POLYGON_MODE_V_FILL:
-        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_FILL; break;
-    default:
-        assert(false);
-        break;
+
+    if (wireframe) {
+        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE;
+    } else {
+        switch (parameter) {
+        case NV097_SET_FRONT_POLYGON_MODE_V_POINT:
+            mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_POINT; break;
+        case NV097_SET_FRONT_POLYGON_MODE_V_LINE:
+            mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
+        case NV097_SET_FRONT_POLYGON_MODE_V_FILL:
+            mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_FILL; break;
+        default:
+            assert(false);
+            break;
+        }
     }
     return mode;
 }
