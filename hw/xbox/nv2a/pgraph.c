@@ -34,7 +34,7 @@ GloContext *g_nv2a_context_display;
 
 NV2AStats g_nv2a_stats;
 
-volatile bool wireframe = false;
+extern int *wireframe;
 
 static void nv2a_profile_increment(void)
 {
@@ -7219,7 +7219,7 @@ static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
 {
     unsigned int mode;
 
-    if (wireframe) {
+    if (*wireframe) {
         mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE;
     } else {
         switch (parameter) {
