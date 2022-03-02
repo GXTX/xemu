@@ -355,6 +355,8 @@ void render_to_default_fb(void)
     glBindFramebuffer(GL_FRAMEBUFFER, main_fb);
     glViewport(vp[0], vp[1], vp[2], vp[3]);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 GLuint render_to_fbo(struct fbo *fbo)
@@ -367,5 +369,7 @@ GLuint render_to_fbo(struct fbo *fbo)
     glViewport(0, 0, fbo->w, fbo->h);
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     return fbo->tex;
 }
