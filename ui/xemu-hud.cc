@@ -2063,10 +2063,12 @@ static void process_keyboard_shortcuts(void)
 
     if (is_shortcut_key_pressed(SDL_SCANCODE_F5)) {
         *wireframe = 1;
+        printf("on\n");
     }
     
     if (is_shortcut_key_pressed(SDL_SCANCODE_F6)) {
         *wireframe = 0;
+        printf("off\n");
     }
 
     if (is_key_pressed(SDL_SCANCODE_GRAVE)) {
