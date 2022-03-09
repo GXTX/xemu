@@ -60,7 +60,7 @@
 #define ISA_LPC47M157_DEVICE(obj) \
     OBJECT_CHECK(ISALPC47M157State, (obj), TYPE_ISA_LPC47M157_DEVICE)
 
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
 # define DPRINTF(format, ...) printf(format, ## __VA_ARGS__)
 #else
