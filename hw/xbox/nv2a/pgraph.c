@@ -7222,7 +7222,7 @@ static unsigned int kelvin_map_stencil_op(uint32_t parameter)
 static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
 {
     unsigned int mode;
-
+/*
         switch (parameter) {
         case NV097_SET_FRONT_POLYGON_MODE_V_POINT:
             mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_POINT; break;
@@ -7234,7 +7234,8 @@ static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
             assert(false);
             break;
     }
-
+*/
+    mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
     return mode;
 }
 
