@@ -4635,11 +4635,12 @@ static void pgraph_render_surface_to(NV2AState *d, SurfaceBinding *surface,
     glDisable(GL_STENCIL_TEST);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    if (*wireframe) {
+    /*if (*wireframe) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     } else {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    }*/
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -7222,7 +7223,10 @@ static unsigned int kelvin_map_stencil_op(uint32_t parameter)
 static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
 {
     unsigned int mode;
-/*
+
+    if (*wireframe) {
+        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
+    } else {
         switch (parameter) {
         case NV097_SET_FRONT_POLYGON_MODE_V_POINT:
             mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_POINT; break;
@@ -7233,6 +7237,7 @@ static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
         default:
             assert(false);
             break;
+        }
     }
 */
     mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE;
