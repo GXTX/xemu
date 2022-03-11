@@ -60,6 +60,7 @@ extern "C" {
 #include "hw/xbox/mcpx/apu_debug.h"
 #include "hw/xbox/nv2a/debug.h"
 #include "hw/xbox/nv2a/nv2a.h"
+#include "hw/xbox/nv2a/nv2a_regs.h"
 #include "net/pcap.h"
 
 #undef typename
@@ -74,6 +75,8 @@ ImFont *g_fixed_width_font;
 float g_main_menu_height;
 float g_ui_scale = 1.0;
 bool g_trigger_style_update = true;
+
+int *g_wireframe = (int*)malloc(sizeof(int));
 
 class NotificationManager
 {
@@ -2059,6 +2062,27 @@ static void process_keyboard_shortcuts(void)
         action_shutdown();
     }
 
+    if (is_shortcut_key_pressed(SDL_SCANCODE_F5)) {
+        uint8_t enable = 0x0A;
+
+        if (*g_wireframe) {
+            *g_wireframe = 0;
+            enable = 0;
+        } else {
+            *g_wireframe = 1;
+        }
+
+        // 0xFD000000 nv2a base
+        // 0x00400000 pgraph base
+        uint64_t addr = 0xFD400000 + NV_PGRAPH_SETUPRASTER;
+
+        xemu_write_virt_mem(addr, &enable, 1);
+
+        // Force a full flush.
+        int rendering_scale = nv2a_get_surface_scale_factor();
+        nv2a_set_surface_scale_factor(rendering_scale);
+    }
+
     if (is_key_pressed(SDL_SCANCODE_GRAVE)) {
         monitor_window.toggle_open();
     }
@@ -2307,6 +2331,8 @@ void xemu_hud_init(SDL_Window* window, void* sdl_gl_context)
         update_window.check_for_updates_and_prompt_if_available();
     }
 #endif
+
+    g_wireframe = (int*)malloc(sizeof(int));
 }
 
 void xemu_hud_cleanup(void)

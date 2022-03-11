@@ -77,6 +77,38 @@ static ssize_t virt_dma_memory_read(vaddr vaddr, void *buf, size_t len)
     return num_bytes_read;
 }
 
+static ssize_t virt_dma_memory_write(vaddr vaddr, void *buf, size_t len)
+{
+    size_t num_bytes_write = 0;
+
+    while (num_bytes_write < len) {
+        // Get physical page for this offset
+        hwaddr phys_addr = 0;
+        if (virt_to_phys(vaddr + num_bytes_write, &phys_addr) != 0) {
+            return -1;
+        }
+
+        // Read contents from the page
+        size_t bytes_remaining_in_page = TARGET_PAGE_SIZE - (phys_addr & ~TARGET_PAGE_MASK);
+        size_t num_bytes_to_write = MIN(len - num_bytes_write, bytes_remaining_in_page);
+
+        // FIXME: Check return value
+        dma_memory_write(&address_space_memory,
+                        phys_addr,
+                        buf + num_bytes_write,
+                        num_bytes_to_write);
+
+        num_bytes_write += num_bytes_to_write;
+    }
+
+    return num_bytes_write;
+}
+
+void xemu_write_virt_mem(uint64_t addr, void *buf, uint32_t len)
+{
+    ssize_t write = virt_dma_memory_write(addr, buf, len);
+}
+
 struct xbe *xemu_get_xbe_info(void)
 {
     vaddr hdr_addr_virt = 0x10000;
