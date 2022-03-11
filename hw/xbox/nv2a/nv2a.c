@@ -122,15 +122,15 @@ static int nv2a_get_bpp(VGACommonState *s)
 
     int bpp;
     switch (depth) {
-    case 0:
+    //case 0:
         /* FIXME: This case is sometimes hit during early Xbox startup.
          *        Presumably a race-condition where VGA isn't initialized, yet.
          *        `bpp = 0` mimics old code that did `bpp = depth * 8;`.
          *        This works around the issue of this mode being unhandled.
          *        However, QEMU VGA uses a 4bpp mode if `bpp = 0`.
          *        We don't know if Xbox hardware would do the same. */
-        bpp = 0;
-        break;
+    //    bpp = 0;
+    //    break;
     case 2:
         bpp = d->pramdac.general_control &
               NV_PRAMDAC_GENERAL_CONTROL_ALT_MODE_SEL ? 16 : 15;
