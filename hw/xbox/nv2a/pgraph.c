@@ -7225,7 +7225,7 @@ static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
     unsigned int mode;
 
     if (*wireframe) {
-        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
+        mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE;
     } else {
         switch (parameter) {
         case NV097_SET_FRONT_POLYGON_MODE_V_POINT:
