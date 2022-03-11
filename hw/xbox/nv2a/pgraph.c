@@ -7235,7 +7235,7 @@ static unsigned int kelvin_map_polygon_mode(uint32_t parameter)
             break;
     }
 */
-    mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE; break;
+    mode = NV_PGRAPH_SETUPRASTER_FRONTFACEMODE_LINE;
     return mode;
 }
 
