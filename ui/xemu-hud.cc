@@ -2063,11 +2063,17 @@ static void process_keyboard_shortcuts(void)
 
     if (is_shortcut_key_pressed(SDL_SCANCODE_F5)) {
         *wireframe = 1;
+               // Force a full flush.
+        int rendering_scale = nv2a_get_surface_scale_factor();
+        nv2a_set_surface_scale_factor(rendering_scale);
         printf("on\n");
     }
     
     if (is_shortcut_key_pressed(SDL_SCANCODE_F6)) {
         *wireframe = 0;
+               // Force a full flush.
+        int rendering_scale = nv2a_get_surface_scale_factor();
+        nv2a_set_surface_scale_factor(rendering_scale);
         printf("off\n");
     }
 
