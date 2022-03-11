@@ -108,6 +108,8 @@ extern "C" {
 // Get current XBE info
 struct xbe *xemu_get_xbe_info(void);
 
+void xemu_write_virt_mem(uint64_t addr, void *buf, uint64_t len);
+
 #ifdef __cplusplus
 }
 #endif

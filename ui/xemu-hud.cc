@@ -2062,7 +2062,22 @@ static void process_keyboard_shortcuts(void)
     }
 
     if (is_shortcut_key_pressed(SDL_SCANCODE_F5)) {
-        *wireframe = 1;
+//        *wireframe = 1;
+        /*MemoryRegion *mem = get_system_memory();
+        hwaddr addr = 0xFD401990;
+        uint64_t data = 0x0A;
+        MemOp op = 0;
+        
+        memory_region_dispatch_write(mem, addr,
+                                         data,
+                                         MemOp op,
+                                         MemTxAttrs attrs);*/
+
+        //vaddr hdr_addr_virt = 0xFD401990;
+        uint8_t buf = 0x0A;
+        //virt_dma_memory_write(hdr_addr_virt, &buf, 1);
+        xemu_write_virt_mem(0xFD401990, &buf, 1);
+
                // Force a full flush.
         int rendering_scale = nv2a_get_surface_scale_factor();
         nv2a_set_surface_scale_factor(rendering_scale);
@@ -2070,7 +2085,7 @@ static void process_keyboard_shortcuts(void)
     }
     
     if (is_shortcut_key_pressed(SDL_SCANCODE_F6)) {
-        *wireframe = 0;
+//        *wireframe = 0;
                // Force a full flush.
         int rendering_scale = nv2a_get_surface_scale_factor();
         nv2a_set_surface_scale_factor(rendering_scale);
