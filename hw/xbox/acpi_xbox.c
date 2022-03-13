@@ -31,7 +31,7 @@
 #include "hw/xbox/acpi_xbox.h"
 #include "migration/vmstate.h"
 
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
 # define XBOX_DPRINTF(format, ...)     printf(format, ## __VA_ARGS__)
 #else
