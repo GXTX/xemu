@@ -31,7 +31,7 @@
 #include "hw/xbox/acpi_xbox.h"
 #include "migration/vmstate.h"
 
-// #define DEBUG
+#define DEBUG
 #ifdef DEBUG
 # define XBOX_DPRINTF(format, ...)     printf(format, ## __VA_ARGS__)
 #else
@@ -101,7 +101,9 @@ static void xbox_pm_update_sci_fn(ACPIREGS *regs)
 static uint64_t xbox_pm_gpe_readb(void *opaque, hwaddr addr, unsigned width)
 {
     XBOX_PMRegs *pm = opaque;
-    return acpi_gpe_ioport_readb(&pm->acpi_regs, addr);
+    uint64_t val = acpi_gpe_ioport_readb(&pm->acpi_regs, addr);
+    XBOX_DPRINTF("pm gpe read [0x%llx] = 0x%llx\n", addr, val);
+    return val;
 }
 
 static void xbox_pm_gpe_writeb(void *opaque, hwaddr addr, uint64_t val,
@@ -110,6 +112,7 @@ static void xbox_pm_gpe_writeb(void *opaque, hwaddr addr, uint64_t val,
     XBOX_PMRegs *pm = opaque;
     acpi_gpe_ioport_writeb(&pm->acpi_regs, addr, val);
     acpi_update_sci(&pm->acpi_regs, pm->irq);
+    XBOX_DPRINTF("pm gpe write [0x%llx] = 0x%llx\n", addr, val);
 }
 
 #define VMSTATE_GPE_ARRAY(_field, _state)                            \
