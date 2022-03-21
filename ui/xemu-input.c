@@ -58,6 +58,9 @@ static const enum xemu_settings_keys port_index_to_settings_key_map[] = {
     XEMU_SETTINGS_INPUT_CONTROLLER_4_GUID,
 };
 
+int g_x;
+int g_y;
+
 void xemu_input_init(void)
 {
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
@@ -118,6 +121,10 @@ int xemu_input_get_controller_default_bind_port(ControllerState *state, int star
     }
 
     return -1;
+}
+
+double map(double input,double toMin, double toMax, double fromMin, double fromMax){
+    return ((input - fromMin) / (fromMax - fromMin)) * (toMax - toMin) + toMin;
 }
 
 void xemu_input_process_sdl_events(const SDL_Event *event)
@@ -227,6 +234,24 @@ void xemu_input_process_sdl_events(const SDL_Event *event)
         }
     } else if (event->type == SDL_CONTROLLERDEVICEREMAPPED) {
         DPRINTF("Controller Remapped: %d\n", event->cdevice.which);
+    } else if (event->type == SDL_MOUSEMOTION) {
+        // We need SDL_Event to get windowID so we need to calculate  mos pos here.
+
+        int mouse_x, mouse_y;
+        SDL_GetGlobalMouseState(&mouse_x, &mouse_y);
+
+        int win_x, win_y;
+        SDL_Window *window = SDL_GetWindowFromID(event->motion.windowID);
+        SDL_GetWindowPosition(window, &win_x, &win_y);
+
+        int wins_x, wins_y;
+        SDL_GetWindowSize(window, &wins_x, &wins_y);
+
+        mouse_x = mouse_x - win_x;
+        mouse_y = mouse_y - win_y;
+
+        g_x = map(mouse_x, (~32768), 32767, 0, wins_x);
+        g_y = map(mouse_y, 32767, (~32768), 0, wins_y);
     }
 }
 
@@ -239,7 +264,8 @@ void xemu_input_update_controller(ControllerState *state)
     }
 
     if (state->type == INPUT_DEVICE_SDL_KEYBOARD) {
-        xemu_input_update_sdl_kbd_controller_state(state);
+        //xemu_input_update_sdl_kbd_controller_state(state);
+        xemu_input_update_sdl_mouse_controller_state(state);
     } else if (state->type == INPUT_DEVICE_SDL_GAMECONTROLLER) {
         xemu_input_update_sdl_controller_state(state);
     }
@@ -255,6 +281,43 @@ void xemu_input_update_controllers(void)
     }
     QTAILQ_FOREACH(iter, &available_controllers, entry) {
         xemu_input_update_rumble(iter);
+    }
+}
+
+void xemu_input_update_sdl_mouse_controller_state(ControllerState *state)
+{
+    state->buttons = 0;
+    memset(state->axis, 0, sizeof(state->axis));
+
+    const uint32_t buttons = SDL_GetGlobalMouseState(NULL, NULL);
+
+    state->axis[CONTROLLER_AXIS_LSTICK_Y] = g_y;
+    state->axis[CONTROLLER_AXIS_LSTICK_X] = g_x;
+
+    state->buttons |= (buttons & SDL_BUTTON(SDL_BUTTON_LEFT));
+    state->buttons |= (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) << 7;
+
+    const uint8_t *kbd = SDL_GetKeyboardState(NULL);
+    const int sdl_kbd_button_map[15] = {
+        SDL_SCANCODE_A,
+        SDL_SCANCODE_B,
+        SDL_SCANCODE_X,
+        SDL_SCANCODE_Y,
+        SDL_SCANCODE_LEFT,
+        SDL_SCANCODE_UP,
+        SDL_SCANCODE_RIGHT,
+        SDL_SCANCODE_DOWN,
+        SDL_SCANCODE_BACKSPACE,
+        SDL_SCANCODE_RETURN,
+        SDL_SCANCODE_1,
+        SDL_SCANCODE_2,
+        SDL_SCANCODE_3,
+        SDL_SCANCODE_4,
+        SDL_SCANCODE_5
+    };
+
+    for (int i = 1; i < 15; i++) {
+        state->buttons |= kbd[sdl_kbd_button_map[i]] << i;
     }
 }
 

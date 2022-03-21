@@ -106,6 +106,7 @@ void xemu_input_init(void);
 void xemu_input_process_sdl_events(const SDL_Event *event); // SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED
 void xemu_input_update_controllers(void);
 void xemu_input_update_controller(ControllerState *state);
+void xemu_input_update_sdl_mouse_controller_state(ControllerState *state);
 void xemu_input_update_sdl_kbd_controller_state(ControllerState *state);
 void xemu_input_update_sdl_controller_state(ControllerState *state);
 void xemu_input_update_rumble(ControllerState *state);
