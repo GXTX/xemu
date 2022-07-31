@@ -60,7 +60,6 @@
 
 #define MAX_IDE_BUS 2
 
-/* FIXME: Clean this up and propagate errors to UI */
 static void xbox_flash_init(MachineState *ms, MemoryRegion *rom_memory)
 {
     const uint32_t rom_start = 0xFF000000;
