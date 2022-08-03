@@ -356,6 +356,9 @@ void xbox_init_common(MachineState *machine,
     /* FIXME: Stub the memory controller */
     pci_create_simple(pci_bus, PCI_DEVFN(0, 3), "pci-testdev");
 
+    /* FIXME: Stub the memory controller */
+    pci_create_simple(pci_bus, PCI_DEVFN(0, 8), "pci-bridge");
+
     if (pci_bus_out) {
         *pci_bus_out = pci_bus;
     }
