@@ -167,6 +167,7 @@ if test ! -z "$debug"; then
     build_cflags='-DXEMU_DEBUG_BUILD=1'
     opts="--enable-debug --enable-trace-backends=log"
 else
+    build_cflags='-DNDEBUG'
     opts="--enable-lto"
 fi
 
