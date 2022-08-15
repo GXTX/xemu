@@ -269,6 +269,7 @@ set -x # Print commands from now on
     --extra-cflags="-DXBOX=1 ${build_cflags} ${sys_cflags} ${CFLAGS}" \
     --extra-ldflags="${sys_ldflags}" \
     --target-list=i386-softmmu \
+    --enable-libusb \
     ${opts} \
     "$@"
 
