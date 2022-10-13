@@ -241,7 +241,7 @@ case "$platform" in # Adjust compilation options based on platform
         ;;
     CYGWIN*|MINGW*|MSYS*)
         echo 'Compiling for Windows...'
-        sys_cflags='-Wno-error'
+        sys_cflags='-Wno-error -march=x86-64-v4'
         opts="$opts --disable-fortify-source"
         postbuild='package_windows' # set the above function to be called after build
         target="qemu-system-i386w.exe"
@@ -249,7 +249,7 @@ case "$platform" in # Adjust compilation options based on platform
     win64-cross)
         echo 'Cross-compiling for Windows...'
         export AR=${AR:-$CROSSAR}
-        sys_cflags='-Wno-error'
+        sys_cflags='-Wno-error -march=x86-64-v4'
         opts="$opts --cross-prefix=$CROSSPREFIX --static --disable-fortify-source"
         postbuild='package_wincross' # set the above function to be called after build
         target="qemu-system-i386w.exe"
