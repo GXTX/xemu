@@ -64,7 +64,7 @@ typedef struct ISALPCSEGAState {
 static void lpcsega_io_write(void *opaque, hwaddr addr, uint64_t val,
                                unsigned int size)
 {
-    DPRINTF("lpcsega io write 0x%02" HWADDR_PRIx " = 0x%02" PRIx64 "\n", addr, val);
+    printf("lpcsega io write 0x%02" HWADDR_PRIx " = 0x%02" PRIx64 "\n", addr, val);
 }
 
 static uint64_t lpcsega_io_read(void *opaque, hwaddr addr, unsigned int size)
@@ -80,7 +80,7 @@ static uint64_t lpcsega_io_read(void *opaque, hwaddr addr, unsigned int size)
         break;
     }
 
-    DPRINTF("lpcsega io read 0x%02" HWADDR_PRIx " -> 0x%02x\n", addr, val);
+    printf("lpcsega io read 0x%02" HWADDR_PRIx " -> 0x%02x\n", addr, val);
 
     return val;
 }
@@ -103,6 +103,8 @@ static void lpcsega_realize(DeviceState *dev, Error **errp)
     memory_region_init_io(&s->io, OBJECT(dev), &lpcsega_io_ops, s,
                           "lpcsega-io", 0x100);
     isa_register_ioport(isadev, &s->io, 0x4000);
+
+    printf("Realized...\n");
 }
 
 static Property lpcsega_properties[] = {
@@ -116,6 +118,8 @@ static void lpcsega_class_init(ObjectClass *klass, void *data)
 
     dc->realize = lpcsega_realize;
     device_class_set_props(dc, lpcsega_properties);
+
+    printf("Init...\n");
 }
 
 static void lpcsega_initfn(Object *o)
