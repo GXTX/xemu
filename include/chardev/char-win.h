@@ -40,8 +40,8 @@ struct WinChardev {
 };
 typedef struct WinChardev WinChardev;
 
-#define NSENDBUF 2048
-#define NRECVBUF 2048
+#define NSENDBUF 2048 * 1024
+#define NRECVBUF 2048 * 1024
 
 #define TYPE_CHARDEV_WIN "chardev-win"
 DECLARE_INSTANCE_CHECKER(WinChardev, WIN_CHARDEV,

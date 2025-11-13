@@ -44,7 +44,10 @@ static int win_chr_read(Chardev *chr, DWORD len)
     }
 
     ZeroMemory(&s->orecv, sizeof(s->orecv));
+#if 0
     s->orecv.hEvent = s->hrecv;
+#endif
+
     ret = ReadFile(s->file, buf, len, &size, &s->orecv);
     if (!ret) {
         err = GetLastError();
@@ -85,6 +88,7 @@ int win_chr_serial_init(Chardev *chr, const char *filename, Error **errp)
     DWORD size;
     DWORD err;
 
+#if 0
     s->hsend = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (!s->hsend) {
         error_setg(errp, "Failed CreateEvent");
@@ -95,6 +99,7 @@ int win_chr_serial_init(Chardev *chr, const char *filename, Error **errp)
         error_setg(errp, "Failed CreateEvent");
         goto fail;
     }
+#endif
 
     s->file = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL,
                       OPEN_EXISTING, FILE_FLAG_OVERLAPPED, 0);
@@ -198,12 +203,15 @@ static void char_win_finalize(Object *obj)
     Chardev *chr = CHARDEV(obj);
     WinChardev *s = WIN_CHARDEV(chr);
 
+#if 0
     if (s->hsend) {
         CloseHandle(s->hsend);
     }
     if (s->hrecv) {
         CloseHandle(s->hrecv);
     }
+#endif
+
     if (!s->keep_open && s->file) {
         CloseHandle(s->file);
     }

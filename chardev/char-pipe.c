@@ -50,6 +50,7 @@ static int win_chr_pipe_init(Chardev *chr, const char *filename,
 
     s->fpipe = TRUE;
 
+#if 0
     s->hsend = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (!s->hsend) {
         error_setg(errp, "Failed CreateEvent");
@@ -60,6 +61,7 @@ static int win_chr_pipe_init(Chardev *chr, const char *filename,
         error_setg(errp, "Failed CreateEvent");
         goto fail;
     }
+#endif
 
     openname = g_strdup_printf("\\\\.\\pipe\\%s", filename);
     s->file = CreateNamedPipe(openname,
